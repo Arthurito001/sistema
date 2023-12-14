@@ -1,0 +1,31 @@
+<!-- buscar_articulos.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buscar pruebas</title>
+</head>
+<body>
+    <h1>Buscar Artículos</h1>
+    <form action="{% url 'resultadosReferenciados' %}" method="GET">
+        <input type="text" name="q" placeholder="Buscar...">
+        <button type="submit">Buscar</button>
+        <input type="checkbox" name="incrementar_iva" value="si"> Incrementar IVA
+    </form>
+
+    {% if query %}
+        <h2>Resultados de búsqueda para "{{ query }}"</h2>
+        <ul>
+            {% for prueba in resultados %}
+            <li>
+                <input type="checkbox" name="seleccionados" value="{{ prueba.nombre }}">
+                {{ prueba.nombre }} - Precio: {{ prueba.costo }}
+            </li>
+            {% empty %}
+            <li>No se encontraron pruebas para la consulta "{{ query }}"</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</body>
+</html>

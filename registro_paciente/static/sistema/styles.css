@@ -1,0 +1,14 @@
+.result-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  padding: 20px;
+}
+
+.result-field {
+  margin: 0 10px;
+  padding: 10px;
+  letter-spacing: 1px;
+  word-spacing: 2px;
+}

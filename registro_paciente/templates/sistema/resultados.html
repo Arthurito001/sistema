@@ -1,0 +1,73 @@
+{% load crispy_forms_tags %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <!-- Bootstrap CSS -->
+   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+       integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+   <link rel="stylesheet" type="text/css" href="{% static 'sistema/styles.css' %}">
+   <title>Vive Laboratorios</title>
+</head>
+
+<body>
+   <strong>VIVE LABORATORIOS</strong>
+   <img src="{% static 'sistema/logo_vive_login.png' %}" class="d-block mx-auto">
+   <h4>Resultado.</h4>
+   <div class="container">
+       <div class="row justify-content-center">
+           <div class="col-8">
+               <h1 class="mt-4" align="center">Vive Laboratorio</h1>
+               <hr class="mt-4 mb-5">
+               <h4 class="mt-4" align="center">Resultados de los análisis.</h4>
+               <hr class="mt-4 mb-5">
+               <div class="row justify-content-center">
+                   <div class="col-6">
+                       <h1>Buscar Registros</h1>
+<!-- Mostrar los resultados en forma horizontal -->
+{% if resultados %}
+<h2>Resultados para el reegistro '{{ busqueda }}':</h2>
+<div class="row">
+    {% for resultado in resultados %}
+        <div class="col-md-12">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-resultados"></h5>
+                    <p class="card-text"><strong>Nombre:</strong> {{ resultado.nombre }} - <strong>Apellid Paterno:</strong> {{ resultado.apellido_paterno }} - <strong>Apellido Materno:</strong> {{ resultado.apellido_materno}}</p>
+                    <p class="card-text"><strong>Edad:</strong> {{ resultado.edad }} - <strong>Género:</strong> {{ resultado.genero }} - <strong>Prueba:</strong> {{ resultado.prueba }} - <strong>Diagnóstico:</strong> {{ resultado.diagnostico }} - <strong>Doctor:</strong> {{ resultado.doctor }}</p>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% else %}
+<p>No se encontraron resultados para '{{ busqueda }}'.</p>
+{% endif %}
+                       <!-- Formulario de búsqueda -->
+                       <form method="post" class="form-inline justify-content-center mb-3">
+                           {% csrf_token %}
+                           {{ form|crispy }}
+                           <button type="submit" class="btn btn-primary ml-2">Buscar</button>
+                       </form>
+
+                       <!-- Formulario de datos adicionales -->
+                       
+                       <form method="post"  >
+                        {% csrf_token %}
+                        <label for="items">resultados analisis</label>
+                        <textarea class="form-control mb-3" name="informacion_adicional" placeholder="Ingrese datos adicionales aquí" style="width: 100%; height: 150px;"></textarea> 
+                        <button type="submit">Enviar</button>
+                    </form>
+                       
+                   </div>   
+                   
+               </div>
+           </div>
+           
+       </div>
+   </div>
+</body>
+</html>

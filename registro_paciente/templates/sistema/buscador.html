@@ -1,0 +1,67 @@
+{%load crispy_forms_tags %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buscador de Pruebas</title>
+</head>
+<body>
+    <h1>Buscar Pruebas</h1>
+    <form method="POST" enctype="multipart/form-data"> 
+        <!-- Security token -->
+        {% csrf_token %}  
+        <!-- Management data of formset -->
+        {{ formset.management_form }} 
+        {% for f in formset %}
+        <div id="formulario_pruebas" class="card" style="padding: 20px;">
+            {{f}}
+        </div>
+        <br>
+        {% endfor %} 
+        <button type = "submit">prueba</button> 
+     </form> 
+     
+     {% if query %}
+     <h2>Resultados de búsqueda para "{{ query }}"</h2>
+     <ul>
+        {% for prueba in resultados %}
+        <li>
+            <input type="checkbox" name="seleccionados" value="{{ prueba.nombre }}">
+            {{ prueba.nombre }} - Precio: {{ prueba.costo }}
+        </li>
+        {% empty %}
+        <li>No se encontraron pruebas para la consulta "{{ query }}"</li>
+        {% endfor %}
+     </ul>
+     {% endif %}
+     
+     <button type="button" onclick="agregar_inputs();">agregar prueba</button>
+     
+     <script>
+     function agregar_inputs(){
+        var total_forms = document.querySelector('#id_form-TOTAL_FORMS');
+     
+        var nuevo_label_ingrese_prueba = document.createElement('label');
+        nuevo_label_ingrese_prueba.innerHTML = 'ingrese prueba';
+     
+        var nuevo_input_ingrese_prueba = document.querySelector('#id_form-0-nombre').cloneNode(true);
+        nuevo_input_ingrese_prueba.name = 'form-'+total_forms.value+'-nombre';
+        nuevo_input_ingrese_prueba.id = 'id_form-'+total_forms.value+'-nombre';
+     
+        var nuevo_formulario = document.createElement('div');
+        nuevo_formulario.id = 'formulario_pruebas_'+total_forms.value;
+        nuevo_formulario.className = 'card';
+        nuevo_formulario.style = 'padding: 20px;';
+     
+        nuevo_formulario.appendChild(nuevo_label_ingrese_prueba);
+        nuevo_formulario.appendChild(nuevo_input_ingrese_prueba);
+     
+        document.querySelector('#formulario_pruebas').parentNode.insertBefore(nuevo_formulario, document.querySelector('#formulario_pruebas').nextSibling);
+     
+        total_forms.value = parseInt(total_forms.value)+1;
+     }
+     </script>
+</body>
+</html>

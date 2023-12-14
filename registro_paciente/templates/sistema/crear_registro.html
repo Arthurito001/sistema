@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Registro</title>
+</head>
+<body>
+    <h1>Formulario de Registro</h1>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ registro_form.as_p }}
+
+        <h2>Pruebas Formset</h2>
+        {{ pruebas_formset.management_form }}
+        {% for form in pruebas_formset %}
+            {{ form.as_p }}
+        {% endfor %}
+
+        <button type="submit">Guardar</button>
+    </form>
+
+    <h2>Resultados de Búsqueda</h2>
+    <form method="get">
+        <input type="text" name="search_query" placeholder="Buscar por nombre y costo">
+        <button type="submit">Buscar</button>
+    </form>
+
+    {% if search_query %}
+        <p>Mostrando resultados para la búsqueda: "{{ search_query }}"</p>
+        {% if pruebas %}
+            <ul>
+                {% for prueba in pruebas %}
+                    <li>{{ prueba.nombre }} - {{ prueba.costo }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No se encontraron resultados para la búsqueda.</p>
+        {% endif %}
+    {% endif %}
+</body>
+</html>
